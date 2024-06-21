@@ -18,29 +18,30 @@ async  function userSignUpController(req,res){
       const hashPassword = await bcrypt.hashSync(password, salt);
       
       if(!hashPassword){
-          throw new Error("Something is wrong")
-      }
-
-      const payload={
-         ...req.body,
-         password : hashPassword
-      }
-      const userData= new userModel(payload)
-      const saveUser=userData.save()
-
-      res.status(201).json({
-        data:saveUser,
-        succcess:true,
-        error:false,
-        message:"User created Succesfully"
-      })
-
-    }catch(error){
-        res.json({
-            message : error,
-            error : true,
-            success :false,
-        })
+        throw new Error("Something is wrong")
     }
+  
+    const payload={
+       ...req.body,
+       password : hashPassword
+    }
+    const userData= new userModel(payload)
+    const saveUser=userData.save()
+  
+    res.status(201).json({
+      data:saveUser,
+      succcess:true,
+      error:false,
+      message:"User created Succesfully"
+    })
+  
+  }catch(error){
+      res.json({
+          message : error,
+          error : true,
+          success :false,
+      })
+  }
+  
 }
 module.exports= userSignUpController
