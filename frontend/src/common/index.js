@@ -1,8 +1,12 @@
-const backendDomain="http://localhost:3000"
+//const backendDomain="http://localhost:8080"
 
 const SummaryApi={
     signUP:{
-        url:`${backendDomain}/api/signup`,
+        url:'http://localhost:8080/api/signup',
+        method:'post'
+    },
+    signIn:{
+        url:'http://localhost:8080/api/signin',
         method:'post'
     }
 }
