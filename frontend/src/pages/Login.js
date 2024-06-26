@@ -3,7 +3,7 @@ import React from 'react';
 import loginIcons from '../assest/signin.gif';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SummaryApi from '../common';
 import {toast} from 'react-toastify';
 
@@ -13,6 +13,7 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const navigate=useNavigate()
 
   const handleOnChange = (e) => {
     const { name, value } = e.target; // Correctly destructure name and value from e.target
@@ -27,7 +28,7 @@ const Login = () => {
             e.preventDefault()
 
             console.log('SummaryApi:', SummaryApi);
-
+  
             const dataResponse=await fetch(SummaryApi.signIn.url,{
               method:SummaryApi.signIn.method,
               credentials:'include',
@@ -40,13 +41,15 @@ const Login = () => {
 
             if(dataApi.success){
               toast.success(dataApi.message)
+              navigate('/')
             }
             if(dataApi.error){
               toast.error(dataApi.message)
-            }
-  }
+            
+          } 
+}
 
-  console.log('data login', data);
+  //console.log('data login', data);
 
   return (
     <section id='login'>

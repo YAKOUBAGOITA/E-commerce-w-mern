@@ -22,6 +22,7 @@ const Header = () => {
           </div>
         </div>
 
+
         <div className=' flex items-center justify-between gap-7'>
           <div className='text-3xl cursor-pointer'>
           <FaRegCircleUser/>
