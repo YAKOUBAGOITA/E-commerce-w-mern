@@ -1,55 +1,75 @@
-const userModel=require('../models/userModel');
+const userModel = require('../models/userModel');
 const bcrypt = require("bcryptjs");
-const jwt=require('jsonwebtoken');
- // Make sure this path is correct
+const jwt = require('jsonwebtoken');
 
 async function userSignInController(req, res) {
     try {
         const { email, password } = req.body;
 
+        // Changed to return response immediately
         if (!email) {
-            throw new Error("Please provide email");
+            return res.status(400).json({
+                message: "Please provide email",
+                error: true,
+                success: false,
+            });
         }
+        
+        // Changed to return response immediately
         if (!password) {
-            throw new Error("Please provide password");
+            return res.status(400).json({
+                message: "Please provide password",
+                error: true,
+                success: false,
+            });
         }
 
         const user = await userModel.findOne({ email });
+        
+        // Changed to return response immediately
         if (!user) {
-            throw new Error("User not found");
+            return res.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false,
+            });
         }
 
         const checkPassword = await bcrypt.compare(password, user.password);
-        if (checkPassword) {
-           const tokenData={
-            _id:user._id,
-            email:user.email,
-            }
-           const token=await jwt.sign({tokenData: 'foobar' }, 'process.env.TOKEN_SECERT_KEY', { expiresIn: 60 * 60*8 });
-
-          const tokenOption={
-            httpOnly:true,
-            secure:true,
-          }
-           res.cookie('token', token,tokenOption).status(200).json({
-            message:"login successfully",
-            data:token,
-            success:true,
-            error:false
-           })
-            
-        }else{
-            throw new Error("Please check password");
+        
+        // Changed to return response immediately if password does not match
+        if (!checkPassword) {
+            return res.status(401).json({
+                message: "Please check password",
+                error: true,
+                success: false,
+            });
         }
 
-        res.json({
-            message: "Sign-in successful",
-            error: false,
+        const tokenData = {
+            _id: user._id,
+            email: user.email,
+        };
+        
+        // Fixed usage of environment variable
+        const token = await jwt.sign({ tokenData }, process.env.TOKEN_SECERT_KEY, { expiresIn: '8h' });
+
+        const tokenOption = {
+            httpOnly: true,
+            secure: true,
+        };
+
+        // Changed to return response immediately and removed redundant response below
+        return res.cookie('token', token, tokenOption).status(200).json({
+            message: "Login successfully",
+            data: token,
             success: true,
+            error: false,
         });
 
     } catch (err) {
-        res.json({
+        // Changed to return response immediately
+        return res.status(500).json({
             message: err.message || err,
             error: true,
             success: false,
