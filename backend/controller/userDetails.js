@@ -1,4 +1,4 @@
-
+const userModel = require('../models/userModel'); // Adjust the path according to your project structure
 
 async function userDetailsController(req, res){
     try{
