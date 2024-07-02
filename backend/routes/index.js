@@ -9,11 +9,15 @@ const userSignInController = require('../controller/userSignIn');
 const authToken=require('../middleware/authToken');
 const userDetailsController = require('../controller/userDetails');
 const userLogout=require('../controller/userLogout');
+const allUsers = require('../controller/allUsers');
 
 
 router.post('/signup', userSignUpController); 
 router.post('/signin', userSignInController);
 router.get('/user-details',authToken, userDetailsController);
 router.get('/userLogout', userLogout);
+
+//Admin Panel
+router.get('/all-users',authToken, allUsers);
 
 module.exports = router;

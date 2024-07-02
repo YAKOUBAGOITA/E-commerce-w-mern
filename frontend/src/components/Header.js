@@ -1,19 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Logo from './Logo'
 import { CiSearch } from "react-icons/ci";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {toast} from 'react-toastify';
 import SummaryApi from '../common';
+import { setUserDetails } from '../store/userSlice';
 
 const Header = () => {
 
-  const user=useSelector(state => state?.user?.user)
+  const user=useSelector(state => state?.user?.user);
+  const dispatch=useDispatch();
+  const [menuDisplay, setMenuDisplay] = useState(false)
 
-  console.log("user header", user)
-
+ 
   const handleLogout = async()=>{
    const fetchData=await fetch(SummaryApi.logout_user.url,{
     method:SummaryApi.logout_user.method,
@@ -23,6 +25,7 @@ const Header = () => {
 
     if(data.success){
       toast.success(data.message)
+      dispatch(setUserDetails(null))
     }
     if(data.error){
       toast.error(data.message)
@@ -46,7 +49,9 @@ const Header = () => {
 
 
         <div className=' flex items-center justify-between gap-7'>
-          <div className='text-3xl cursor-pointer'>
+        
+         <div className='relative flex justify-center '>
+         <div className='text-3xl cursor-pointer relative flex justify-center' onClick={()=>{setMenuDisplay(preve => !preve)}}>
           {
             user?.profilePic ? (
             <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user?.name}/>
@@ -55,6 +60,16 @@ const Header = () => {
            )
           }
           </div>
+             {
+              menuDisplay && (
+              <div className='absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded '>
+                   <nav>
+                     <Link to={'admin-panel'} className='whitespace-nowrap hidden md:block hover:bg-slate-100' onClick={()=>{setMenuDisplay(preve => !preve)}}>Admin Panel</Link>
+                    </nav>
+               </div>
+              )
+             }
+         </div>
           <div className='text-2xl relative'>
             <span><FaShoppingCart/></span>
             
