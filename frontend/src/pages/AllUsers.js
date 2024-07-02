@@ -14,7 +14,7 @@ function AllUsers() {
         const dataResponse = await fetchData.json();
 
         if (dataResponse.success) {
-            setAllUsers(dataResponse);
+            setAllUsers(dataResponse.data);
         }
 
         if (dataResponse.error) {
