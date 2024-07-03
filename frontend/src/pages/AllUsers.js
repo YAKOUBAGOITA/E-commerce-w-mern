@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import SummaryApi from '../common';
 import { toast } from 'react-toastify';
+import moment from 'moment';
+import { MdModeEdit } from "react-icons/md";
+import ChangeUserRole from '../components/ChangeUserRole';
 
 function AllUsers() {
 
@@ -36,22 +39,30 @@ function AllUsers() {
                         <th>Name</th>
                         <th>Role</th>
                         <th>Created Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {allUser.map((el, index) => {
                     return(
-                        <tr>
+                        <tr  key={index}>
                             <td>{index + 1}</td>
                             <td>{el?.email}</td>
                             <td>{el?.name}</td>
                             <td>{el?.role}</td>
-                            <td>{el?.createdat}</td>
+                            <td>{moment(el?.createdAt).format('LL')}</td>
+                            <td>
+                                <button className='bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white'>
+                                   < MdModeEdit/>
+                                </button>
+                            </td>
                         </tr>
                     )
                       })}
                 </tbody>
             </table>
+
+            <ChangeUserRole/>
         </div>
     );
 }
