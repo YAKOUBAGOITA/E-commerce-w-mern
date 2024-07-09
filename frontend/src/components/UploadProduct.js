@@ -14,29 +14,46 @@ function UploadProduct({ onClose }) {
     productImage: [],
     description: "",
     price: "",
-    selling: "",
+    sellingPrice: "",
   });
 
-  const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
-  const [fullScreenImage, setFullScreenImage] = useState("");
+      const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
+      const [fullScreenImage, setFullScreenImage] = useState("");
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+      const handleOnChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({
+          ...prevData,
+          [name]:value,
+        }));
+      };
 
-  const handleUploadProduct = async (e) => {
-    const file = e.target.files[0];
-    const uploadImageCloudinary = await uploadImage(file);
-    
-    setData((prevData) => ({
-      ...prevData,
-      productImage: [...prevData.productImage, uploadImageCloudinary.url]
-    }));
-  };
+      const handleUploadProduct = async (e) => {
+        const file = e.target.files[0];
+        const uploadImageCloudinary = await uploadImage(file);
+        
+        setData((prevData) => ({
+          ...prevData,
+          productImage: [...prevData.productImage, uploadImageCloudinary.url]
+        }));
+      };
+
+      const handleDeleteProductImage=async(index)=>{
+      console.log("image index", index)
+
+      const newProductImage=[...data.productImage]
+      newProductImage.splice(index, 1)
+      setData((prevData) => ({
+        ...prevData,
+        productImage: [...newProductImage]
+      }));
+      }
+
+
+const handleSubmit=(e)=>{
+  e.preventDefault()
+  console.log("data", data)
+}
 
   return (
     <div className='fixed w-full h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex justify-center items-center '>
@@ -48,7 +65,7 @@ function UploadProduct({ onClose }) {
           </div>
         </div>
 
-        <form className='grid p-4 gap-3 overflow-y-scroll h-full pb-5'>
+        <form className='grid p-4 gap-3 overflow-y-scroll h-full pb-5'  onSubmit={handleSubmit}>
           <label htmlFor='productName'>Product Name:</label>
           <input
             type='text'
@@ -79,6 +96,7 @@ function UploadProduct({ onClose }) {
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
           >
+             <option value={""}>Select Category</option>
             {productCategory.map((el, index) => (
               <option value={el.value} key={el.value + index}>{el.label}</option>
             ))}
@@ -101,7 +119,7 @@ function UploadProduct({ onClose }) {
                 <div className='flex items-center gap-2'>
                   {
                     data.productImage.map((el, index) => (
-                      <div className='relative'>
+                      <div className='relative group'>
                           <img 
                               src={el}
                               alt={el} 
@@ -114,7 +132,13 @@ function UploadProduct({ onClose }) {
                                 setFullScreenImage(el);
                               }}
                             />
-                            <div className='absolute bottom-0 right-0'>
+                            <div
+                             className='absolute bottom-0 right-0 p-1
+                                     text-white bg-red-600 
+                                     rounded-full hidden 
+                                     group-hover:block cursor-pointer'
+                                      onClick={() => handleDeleteProductImage(index)}
+                                      >
                               <MdDelete/>
                             </div>
                       </div>
@@ -127,6 +151,39 @@ function UploadProduct({ onClose }) {
             }
           </div>
 
+               <label htmlFor='selling'>Price:</label>
+               <input
+                type='number'
+                id='price'
+                placeholder='enter price'
+                name="price"
+                value={data.price }
+                onChange={handleOnChange}
+                className='p-2 bg-slate-100 border rounded'
+              />
+
+              <label htmlFor='sellingPrice'>Selling Price:</label>
+               <input
+                type='number'
+                id='sellingPrice'
+                placeholder='enter selling price'
+                name="sellingPrice"
+                value={data.sellingPrice}
+                onChange={handleOnChange}
+                className='p-2 bg-slate-100 border rounded'
+              />
+
+              <label htmlFor='description'>Description:</label>
+              <textarea
+                 className='h-28 bg-slate-100 border resize-none p-1' 
+                 placeholder='enter product description' 
+                 row={3}
+                 onChange={handleOnChange}
+                 name='description'
+              >
+
+              </textarea>
+          
           <button className='px-3 py-1 bg-red-600 text-white mb-10 hover:bg-red-700'>Upload Product</button>
         </form>
       </div>
