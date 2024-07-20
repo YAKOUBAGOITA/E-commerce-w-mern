@@ -9,7 +9,10 @@ import SummaryApi from '../common';
 import { toast } from 'react-toastify';
 
 
-function UploadProduct({ onClose }) {
+function UploadProduct({
+  onClose,
+  fetchData 
+}) {
   const [data, setData] = useState({
     productName: "",
     brandName: "",
@@ -69,6 +72,7 @@ const handleSubmit=async(e)=>{
   if(responseData.success){
     toast.success(responseData?.message)
     onClose()
+    fetchData()
   }
 
   if(responseData.error){
