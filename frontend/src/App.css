@@ -12,3 +12,6 @@
 .userTable td{
 @apply border text-base font-medium text-center
 }
+.scrollbar-none::-webkit-scrollbar{
+display:none
+}
