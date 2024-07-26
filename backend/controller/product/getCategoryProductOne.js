@@ -20,6 +20,7 @@ const getCategoryProduct = async(req,res)=>{
       res.json({
         message:"product category",
         data:productByCategory,
+        success:true,
         error:false
       })
 
