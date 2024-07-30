@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import fetchCategoryWiseProduct from '../helpers/fetchCategoryWiseProduct'
 import displayINRCurrency from '../helpers/displayCurrency'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import addToCart from '../helpers/addToCart'
 
 const HorizontalCardProduct = ({category, heading}) => {
 
@@ -65,7 +67,7 @@ const HorizontalCardProduct = ({category, heading}) => {
             ):(
               data.map((product, index)=>{
                 return(
-                      <div className='w-full min-w-[200px] md:min-w-[320px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex'>
+                      <Link to={"product/"+product?._id} className='w-full min-w-[200px] md:min-w-[320px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex'>
                             <div className='bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px]'>
                                 <img src={product.productImage[0]} className='object-scale-down h-full hover:scale-110 transition-all'/>
                             </div>
@@ -76,9 +78,9 @@ const HorizontalCardProduct = ({category, heading}) => {
                               <p className='text-red-600 font-medium'>{displayINRCurrency(product?.sellingPrice)}</p>
                               <p className='text-slate-500 line-through'>{displayINRCurrency(product?.price)}</p>
                               </div>
-                              <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-2 py-0.5 rounded-full'>Add to Card</button>
+                              <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-2 py-0.5 rounded-full' onClick={(e)=>addToCart(e, product?._id)}>Add to Card</button>
                             </div>
-                        </div>
+                        </Link>
                 )
             })
             )

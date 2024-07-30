@@ -1,3 +1,4 @@
+
 const backendDomain = "http://localhost:8080";
 
 const SummaryApi = {
@@ -44,7 +45,13 @@ const SummaryApi = {
    categoryWiseProduct:{
       url:`${backendDomain}/api/category-product`,
       method:'post'
+   },
+   
+   productDetails:{
+      url:`${backendDomain}/api/product-details`,
+      method:'post'
    }
+   
 };
 
 export default SummaryApi;
