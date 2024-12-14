@@ -36,4 +36,10 @@ router.post('/update-product',authToken, updateProductController)
 router.get('/get-categoryProduct',getCategoryProduct)
 router.post('/category-product',getCategoryWiseProduct)
 router.post('/product-details',getProductDetails)
+
+
+//user add to cart
+router.post('/addtocart',authToken, addToCartController)
+
 module.exports = router;
+
